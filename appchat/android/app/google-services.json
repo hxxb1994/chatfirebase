@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "795116178998",
+    "firebase_url": "https://chat-hxb.firebaseio.com",
+    "project_id": "chat-hxb",
+    "storage_bucket": "chat-hxb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:795116178998:android:3627aebd2c8a7ed47c1297",
+        "android_client_info": {
+          "package_name": "com.example.appchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "795116178998-bed7nqupbl487ust9v2cp43ad95fi9ad.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5Og_yEL6HnGr38GFwlomL95pAbtDMCTQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "795116178998-bed7nqupbl487ust9v2cp43ad95fi9ad.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
