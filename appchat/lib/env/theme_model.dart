@@ -9,6 +9,7 @@ class ThemeModel extends StatesRebuilder {
   bool isDark = true;
   Color accentColor = Colors.pink;
   Color primaryColor = Colors.white;
+  Color background = Colors.cyanAccent;
 
   void changeBrightness() {
     brightness = isDark ? Brightness.light : Brightness.dark;
@@ -18,6 +19,7 @@ class ThemeModel extends StatesRebuilder {
     receiver = isDark ? "Light" : "Dark";
     accentColor = isDark ? Colors.pink : Colors.red;
     primaryColor = isDark ? Colors.black : Colors.white;
+    background = isDark ? Colors.cyanAccent : Colors.black87;
     rebuildStates();
   }
 }
