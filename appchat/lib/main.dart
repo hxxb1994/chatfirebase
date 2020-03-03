@@ -1,4 +1,5 @@
 import 'package:appchat/env/theme_model.dart';
+import 'package:appchat/features/login/pages/flatscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
@@ -56,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ));
     print('load1');
     return Scaffold(
-      body: Container(),
+      body: FlatScreen(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           if (MediaQuery.of(context).platformBrightness == Brightness.dark) {

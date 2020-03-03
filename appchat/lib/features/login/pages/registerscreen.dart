@@ -1,6 +1,7 @@
 import 'package:appchat/env/theme_model.dart';
 import 'package:appchat/features/login/blocs/button_login.dart';
 import 'package:appchat/features/login/pages/loginscreen.dart';
+import 'package:appchat/features/login/service/auth.dart';
 import 'package:appchat/features/login/widgets/input_login.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -108,7 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             height: 25,
                           ),
                           GestureDetector(
-                            onTap: (){},
+                            onTap: _register,
                             child: ButtonLogin(
                               text: 'CREATE',
                             ),
@@ -157,5 +158,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
          content: Text(txt),
         )
     );
+  }
+
+  void _register()async{
+    String email = _emailController.text;
+    String pass = _passController.text;
+    String comPass = _confirmPassController.text;
+
+    if(email == ''|| pass == '' || comPass == ''){
+      showDialogAlert('Fill text please!');
+      return;
+    }
+    if(pass!=comPass){
+      showDialogAlert('Error pass!');
+      return;
+    }
+
+    setState(() {
+      showSpinner = true;
+    });
+
+    bool result = await AuthService.instance.registerEmail(email, pass);
+    if(result == false){
+      showDialogAlert('Register fail!');
+    }else{
+      showDialogAlert('Register success');
+      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>LoginScreen()));
+    }
+
+    setState(() {
+      showSpinner = false;
+    });
   }
 }
