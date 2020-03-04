@@ -182,8 +182,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if(result == false){
       showDialogAlert('Register fail!');
     }else{
-      showDialogAlert('Register success');
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>LoginScreen()));
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          actions: <Widget>[
+            FlatButton(
+              onPressed: (){
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>LoginScreen()));
+              },
+              child: Text('OK'),
+              )
+          ],
+         content: Container(
+           height: 100,
+           decoration: BoxDecoration(
+             color: Colors.white38,
+             boxShadow: [
+              BoxShadow(
+                color: Colors.white,
+                blurRadius: 5.0, // has the effect of softening the shadow
+                spreadRadius: 5.0, // has the effect of extending the shadow
+                offset: Offset(
+                  2.0, // horizontal, move right 10
+                  2.0, // vertical, move down 10
+                ),
+              )],
+            borderRadius: BorderRadius.circular(5),
+           ),
+           child: Center(child: Text('Login Success!')),
+         ),
+        )
+    );
     }
 
     setState(() {

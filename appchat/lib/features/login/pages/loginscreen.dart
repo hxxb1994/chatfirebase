@@ -3,6 +3,7 @@ import 'package:appchat/features/home/home_screen.dart';
 import 'package:appchat/features/login/blocs/button_facebook.dart';
 import 'package:appchat/features/login/blocs/button_google.dart';
 import 'package:appchat/features/login/blocs/button_login.dart';
+import 'package:appchat/features/login/pages/firsttime_screen.dart';
 import 'package:appchat/features/login/pages/registerscreen.dart';
 import 'package:appchat/features/login/service/auth.dart';
 import 'package:appchat/features/login/widgets/input_login.dart';
@@ -179,10 +180,14 @@ class _LoginScreenState extends State<LoginScreen> {
       _showSpinner = true;
     });
 
-    dynamic result = await AuthService.instance.signInEmail(_emailController.text, _passController.text);
-print(result);
+    String result = await AuthService.instance.signInEmail(_emailController.text, _passController.text);
+
     if(result != null){
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      if(result == 'goto'){
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FirstTimeScreen()));
+      }else{
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      }
     }else{
       showDialogAlert("Login Fail!");
     }

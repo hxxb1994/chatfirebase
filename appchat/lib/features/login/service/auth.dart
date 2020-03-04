@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService{
@@ -9,6 +12,7 @@ class AuthService{
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final userRef = Firestore.instance.collection('users');
+  final StorageReference storageRef = FirebaseStorage.instance.ref();
 
 
   // Stream<User> get user{
@@ -22,7 +26,6 @@ class AuthService{
   //sign email pass
   Future<String> signInEmail(String email, String password) async{
     try {
-
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
       FirebaseUser willLoggedInUser = await _auth.currentUser();
@@ -44,17 +47,15 @@ class AuthService{
                 doc["profpic"] == "" ||
                 doc["userid"] == "" ||
                 doc["username"] == "") {
-                  return 'goto';
-                }else{
-                  return userid;
+                  userid = 'goto';
                 }
           } else {
             print("No document $userid");
-            return null;
+            userid = null;
           }
         });
       }
-      return null;
+      return userid;
     }catch(e) {
       print("firebase login email: "+ e.toString());
       return null;
@@ -70,7 +71,6 @@ class AuthService{
       }
       FirebaseUser firebaseUser = await _auth.currentUser();
       String id = firebaseUser.uid;
-      print(id);
       await userRef.document(id).setData({
             'age': "",
             'bio': "",
@@ -87,4 +87,43 @@ class AuthService{
       return false;
     }
   }
+
+  Future<String> uploadImage(imageFile, String profpic) async {
+    StorageUploadTask uploadTask =
+        storageRef.child("profile_$profpic.jpg").putFile(imageFile);
+    StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
+    String downloadUrl = await storageSnap.ref.getDownloadURL();
+    return downloadUrl;
+  }
+
+
+  Future createUser(int age, String bio, 
+    String birtdate, String gender, String name, 
+    String profileId, File imageFile, String username) async{
+    try{
+
+      String profpic = '';
+      if(imageFile != null){
+        profpic = await uploadImage(imageFile, profileId);
+      }
+
+      FirebaseUser firebaseUser = await _auth.currentUser();
+      String id = firebaseUser.uid;
+      await userRef.document(id).setData({
+        'age': age,
+        'bio': bio,
+        'birtdate': birtdate,
+        'gender': gender,
+        'name': name,
+        'profpic': profpic,
+        'userid': id,
+        'username': username
+      });
+      return true;
+    }catch(e){
+      print("create user error: "+ e.toString());
+      return false;
+    }
+  }
+
 }

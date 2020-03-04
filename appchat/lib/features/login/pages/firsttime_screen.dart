@@ -1,12 +1,16 @@
 import 'dart:io';
 
 import 'package:appchat/env/theme_model.dart';
+import 'package:appchat/features/home/home_screen.dart';
+import 'package:appchat/features/login/service/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:uuid/uuid.dart';
+import 'package:image/image.dart' as Im;
 
 class FirstTimeScreen extends StatefulWidget {
   @override
@@ -19,20 +23,22 @@ class _FirstTimeScreenState extends State<FirstTimeScreen> {
   int _currentStep = 0;
 
   TextEditingController _fullnameController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _bioController = TextEditingController();
 
   //post
   String _profileId = Uuid().v4();
   String _fullname;
   File _image;
   int _dDateYear;
+  
   int _radioSelect;
-  String _genderValue;
-  String _address;
+  String _genderValue = 'Male';
+  String _username;
+  String _bio;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _radioSelect = 0;
   }
@@ -144,9 +150,6 @@ class _FirstTimeScreenState extends State<FirstTimeScreen> {
                   },
                   onStepContinue: (){
                     if(_currentStep == _signUpStep(theme).length - 1){
-                      setState(() {
-                        _showSpinner = true;
-                      });
                       //create profile
                       _updateProfile();
                     }else{
@@ -218,7 +221,7 @@ class _FirstTimeScreenState extends State<FirstTimeScreen> {
               primaryColor: theme.primaryColor,
             ),
             child: TextField(
-              controller: null,
+              controller: _bioController,
               decoration: InputDecoration(
                 border: UnderlineInputBorder(
                   borderSide: new BorderSide(
@@ -246,18 +249,17 @@ class _FirstTimeScreenState extends State<FirstTimeScreen> {
     });
   }
 
-//  compressImage() async {
-//    final tempDir = await getTemporaryDirectory();
-//    final path = tempDir.path;
-//    Im.Image imageFile = Im.decodeImage(_image.readAsBytesSync());
-//    final compressImageFile = File('$path/img_$_profileId.jpg')
-//      ..writeAsBytesSync(Im.encodeJpg(imageFile, quality: 85));
-//
-//    setState(() {
-//      _image = compressImageFile;
-//    });
-//  }
+ compressImage() async {
+   final tempDir = await getTemporaryDirectory();
+   final path = tempDir.path;
+   Im.Image imageFile = Im.decodeImage(_image.readAsBytesSync());
+   final compressImageFile = File('$path/img_$_profileId.jpg')
+     ..writeAsBytesSync(Im.encodeJpg(imageFile, quality: 85));
 
+   setState(() {
+     _image = compressImageFile;
+   });
+ }
 
   Widget _circlePicture() => Container(
     child: Stack(
@@ -319,7 +321,7 @@ class _FirstTimeScreenState extends State<FirstTimeScreen> {
         Padding(
           padding: const EdgeInsets.only(top: 80.0, left: 20, right: 20),
           child: TextField(
-            controller: _addressController,
+            controller: _usernameController,
             cursorColor: Colors.white,
             decoration: InputDecoration(
                 labelText: 'Address',
@@ -445,7 +447,23 @@ class _FirstTimeScreenState extends State<FirstTimeScreen> {
       _showSpinner = true;
     });
 
+    final dateNow = DateTime.now().year;
+    final ageN = dateNow - _dDateYear;
     _fullname = _fullnameController.text;
-    _address = _addressController.text;
+    _username = _usernameController.text;
+    _bio = _bioController.text;
+    
+
+    bool result = await AuthService.instance.createUser(ageN, _bio, _date, 
+    _genderValue, _fullname, _profileId, _image, _username);
+
+    setState(() {
+      _showSpinner = false;
+    });    
+    if(result){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> HomeScreen()));
+    }else{
+      showAlertDialog('Update profile fail!');
+    }
   }
 }
