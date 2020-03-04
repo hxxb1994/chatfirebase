@@ -1,14 +1,15 @@
 import 'package:appchat/env/theme_model.dart';
-import 'package:appchat/features/home/home_screen.dart';
+import 'package:appchat/features/home/pages/home_screen.dart';
 import 'package:appchat/features/login/blocs/button_facebook.dart';
 import 'package:appchat/features/login/blocs/button_google.dart';
 import 'package:appchat/features/login/blocs/button_login.dart';
 import 'package:appchat/features/login/pages/firsttime_screen.dart';
 import 'package:appchat/features/login/pages/registerscreen.dart';
-import 'package:appchat/features/login/service/auth.dart';
+import 'package:appchat/service/auth.dart';
 import 'package:appchat/features/login/widgets/input_login.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -25,6 +26,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _gotoRegisterScreen(){
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RegisterScreen()));
+  }
+
+  Future _getuserpref() async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    _emailController.text = pref.getString('email');
+    _passController.text = pref.getString('password');
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getuserpref();
   }
 
   void showDialogAlert(String txt){

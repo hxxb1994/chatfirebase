@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:appchat/env/theme_model.dart';
-import 'package:appchat/features/home/home_screen.dart';
-import 'package:appchat/features/login/service/auth.dart';
+import '.../../../../home/pages/home_screen.dart';
+import 'package:appchat/service/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:image_picker/image_picker.dart';

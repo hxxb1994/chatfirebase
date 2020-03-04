@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:appchat/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -22,6 +23,16 @@ class AuthService{
   // Stream<User> get user{
   //   return _auth.onAuthStateChanged.map()
   // }
+
+  Future<User> getCurrentUser() async {
+    final user = await _auth.currentUser();
+    if (user != null) {
+      DocumentSnapshot doc = await userRef.document(user.uid).get();
+      return User.fromDocument(doc);
+    }else{
+      return null;
+    }
+  }
 
   //sign email pass
   Future<String> signInEmail(String email, String password) async{

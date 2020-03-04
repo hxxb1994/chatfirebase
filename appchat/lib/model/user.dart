@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class User{
   final String id;
@@ -24,12 +23,6 @@ class User{
       birthdate: doc['birthdate'],
       name: doc['name'],
       gender: doc['gender']
-    );
-  }
-
-  factory User.fromFirebaseUser(FirebaseUser user){
-    return User(
-      id:user.uid,
     );
   }
 

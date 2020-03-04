@@ -1,6 +1,8 @@
 import 'package:appchat/env/theme_model.dart';
+import 'package:appchat/features/home/pages/home_screen.dart';
 import 'package:appchat/features/login/pages/loginscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 
 class FlatScreen extends StatefulWidget {
@@ -10,13 +12,15 @@ class FlatScreen extends StatefulWidget {
 
 class _FlatScreenState extends State<FlatScreen> {
 
-  void gotoLogin(){
-    Future.delayed(
-      Duration(seconds: 2),
-      (){
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginScreen()));
-      }
-    );
+  void gotoLogin() async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String id = pref.getString('uid');
+
+    if(id!=null){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeScreen(id:id)));
+    }else{
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginScreen()));
+    }
   }
 
   void showDialogAlert(String txt) {
@@ -24,8 +28,6 @@ class _FlatScreenState extends State<FlatScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          // Retrieve the text the that user has entered by using the
-          // TextEditingController.
           content: Text(txt),
         );
       },
@@ -36,7 +38,6 @@ class _FlatScreenState extends State<FlatScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     gotoLogin();
  }

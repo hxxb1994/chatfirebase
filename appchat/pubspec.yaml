@@ -30,6 +30,12 @@ dependencies:
   image_picker: ^0.6.3+4
   flutter_datetime_picker: ^1.3.4
   path_provider: ^1.6.5
+  curved_navigation_bar: ^0.3.2
+  cached_network_image: ^2.0.0
+  video_player: ^0.10.8+1
+  chewie: ^0.9.8+1
+  animator: ^1.0.0+5
+  timeago: ^2.0.26
 
 
   firebase_auth: ^0.15.5+2

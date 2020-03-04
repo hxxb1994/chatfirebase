@@ -1,3 +1,4 @@
+import 'package:appchat/env/navigator_bar.dart';
 import 'package:appchat/env/theme_model.dart';
 import 'package:appchat/features/login/pages/flatscreen.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,8 @@ class MyApp extends StatelessWidget {
     ));
     return Injector(
       inject: [
-        Inject(()=> ThemeModel())
+        Inject(()=> ThemeModel()),
+        Inject(()=> NavigationBarState())
       ],
       builder: (context) {
         print("load main");

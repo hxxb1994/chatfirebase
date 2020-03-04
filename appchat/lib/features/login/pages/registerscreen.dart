@@ -1,7 +1,7 @@
 import 'package:appchat/env/theme_model.dart';
 import 'package:appchat/features/login/blocs/button_login.dart';
 import 'package:appchat/features/login/pages/loginscreen.dart';
-import 'package:appchat/features/login/service/auth.dart';
+import 'package:appchat/service/auth.dart';
 import 'package:appchat/features/login/widgets/input_login.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
