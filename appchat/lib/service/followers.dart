@@ -5,5 +5,13 @@ class FollowerService{
   static FollowerService get instance => _instance;
   FollowerService._();
 
-  final activityFeedRef = Firestore.instance.collection('followers');
+  final Ref = Firestore.instance.collection('followers');
+
+  Future<int> getFollowers() async{
+      QuerySnapshot snapshot = await Ref.document()
+      .collection('usersFollower')
+      .getDocuments();
+        
+    return snapshot.documents.length;
+  }
 }

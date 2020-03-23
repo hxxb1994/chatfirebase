@@ -137,4 +137,8 @@ class AuthService{
     }
   }
 
+
+  Future<DocumentSnapshot> getProflie(String uid)async{
+    return await userRef.document(uid).get();
+  }
 }

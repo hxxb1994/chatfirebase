@@ -1,4 +1,3 @@
-import 'package:appchat/env/navigator_bar.dart';
 import 'package:appchat/features/home/pages/activity.dart';
 import 'package:appchat/features/home/pages/profile.dart';
 import 'package:appchat/features/home/pages/search.dart';
